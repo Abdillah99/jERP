@@ -1,0 +1,11 @@
+{
+  "package": {
+    "productName": "jERP Desktop",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "windows": [
+      { "title": "jERP", "width": 1024, "height": 768 }
+    ]
+  }
+}

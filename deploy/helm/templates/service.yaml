@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jerp-api
+spec:
+  selector:
+    app: jerp-api
+  ports:
+    - port: 80
+      targetPort: 4000

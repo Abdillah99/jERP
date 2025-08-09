@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id       String   @id @default(cuid())
+  name     String
+  schema   String   @unique
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String?
+  role      Role     @default(STAFF)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  STAFF
+}
+
+model Product {
+  id        String   @id @default(cuid())
+  sku       String   @unique
+  name      String
+  uom       String
+  price     Decimal  @db.Numeric(16,2)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Invoice {
+  id         String        @id @default(cuid())
+  customer   String
+  status     InvoiceStatus @default(DRAFT)
+  subtotal   Decimal       @db.Numeric(16,2)
+  tax        Decimal       @db.Numeric(16,2)
+  total      Decimal       @db.Numeric(16,2)
+  lines      InvoiceLine[]
+  postedAt   DateTime?
+  createdAt  DateTime      @default(now())
+}
+
+model InvoiceLine {
+  id        String   @id @default(cuid())
+  invoiceId String
+  productId String
+  qty       Decimal  @db.Numeric(16,3)
+  unitPrice Decimal  @db.Numeric(16,2)
+  total     Decimal  @db.Numeric(16,2)
+  Invoice   Invoice  @relation(fields: [invoiceId], references: [id])
+  Product   Product  @relation(fields: [productId], references: [id])
+}
+
+enum InvoiceStatus {
+  DRAFT
+  POSTED
+}
+
+model JournalEntry {
+  id        String      @id @default(cuid())
+  ref       String?
+  date      DateTime    @default(now())
+  lines     JournalLine[]
+}
+
+model JournalLine {
+  id          String   @id @default(cuid())
+  entryId     String
+  accountCode String
+  debit       Decimal  @default(0) @db.Numeric(16,2)
+  credit      Decimal  @default(0) @db.Numeric(16,2)
+  Entry       JournalEntry @relation(fields: [entryId], references: [id])
+}
