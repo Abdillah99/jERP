@@ -1,0 +1,16 @@
+{
+  "name": "erp-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "db:generate": "pnpm --filter apps/api prisma generate",
+    "db:migrate": "pnpm --filter apps/api prisma migrate deploy"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.0"
+  }
+}

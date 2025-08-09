@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jerp-api
+spec:
+  replicas: {{ .Values.api.replicaCount }}
+  selector:
+    matchLabels:
+      app: jerp-api
+  template:
+    metadata:
+      labels:
+        app: jerp-api
+    spec:
+      containers:
+        - name: api
+          image: {{ .Values.api.image }}
+          ports:
+            - containerPort: 4000
+          env:
+            - name: DATABASE_URL
+              value: postgres://postgres:postgres@postgres:5432/postgres

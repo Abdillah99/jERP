@@ -1,0 +1,6 @@
+api:
+  image: jerp-api:latest
+  replicaCount: 1
+web:
+  image: jerp-web:latest
+  replicaCount: 1
